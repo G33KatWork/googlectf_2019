@@ -1,0 +1,24 @@
+From 843bc0dec47ddb5fde255f6eabd149dd11f51c6f Mon Sep 17 00:00:00 2001
+From: Andreas Galauner <andreas@galauner.de>
+Date: Sun, 23 Jun 2019 04:30:25 +0200
+Subject: [PATCH 5/6] cfg
+
+---
+ configs/qemu_arm_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/configs/qemu_arm_defconfig b/configs/qemu_arm_defconfig
+index 35bd574c7d..7104af6117 100644
+--- a/configs/qemu_arm_defconfig
++++ b/configs/qemu_arm_defconfig
+@@ -13,6 +13,7 @@ CONFIG_CMD_BOOTZ=y
+ CONFIG_CMD_PART=y
+ CONFIG_CMD_PCI=y
+ CONFIG_CMD_DHCP=y
++CONFIG_CMD_WGET=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_PXE=y
+-- 
+2.22.0
+

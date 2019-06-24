@@ -1,0 +1,74 @@
+From 2b3c033e3d49da368f04412b4ff0e5bdd95f3c9a Mon Sep 17 00:00:00 2001
+From: Andreas Galauner <andreas@galauner.de>
+Date: Sun, 23 Jun 2019 04:27:13 +0200
+Subject: [PATCH 4/6] lol
+
+---
+ include/configs/qemu-arm.h | 2 +-
+ include/net/wget.h         | 2 +-
+ net/wget.c                 | 9 +++------
+ 3 files changed, 5 insertions(+), 8 deletions(-)
+
+diff --git a/include/configs/qemu-arm.h b/include/configs/qemu-arm.h
+index ae59e25ab7..636e44f344 100644
+--- a/include/configs/qemu-arm.h
++++ b/include/configs/qemu-arm.h
+@@ -25,7 +25,7 @@
+ #define CONFIG_ENV_SIZE			SZ_256K
+ 
+ #define CONFIG_BOOTCOMMAND \
+-	"pci enum; virtio scan; dhcp; ctf"
++	"pci enum; virtio scan; dhcp; wget 169.254.169.254:/foo"
+ 
+ #define CONFIG_SYS_CBSIZE 512
+ 
+diff --git a/include/net/wget.h b/include/net/wget.h
+index 61bdd851f9..3872ff63e4 100644
+--- a/include/net/wget.h
++++ b/include/net/wget.h
+@@ -13,7 +13,7 @@ enum WGET_STATE {
+ 	WGET_TRANSFERRED
+ };
+ 
+-#define	DEBUG_WGET		0	/* Set to 1 for debug messges */
++#define	DEBUG_WGET		1	/* Set to 1 for debug messges */
+ #define	SERVER_PORT		80
+ #define	WGET_RETRY_COUNT	30
+ #define	WGET_TIMEOUT		2000UL
+diff --git a/net/wget.c b/net/wget.c
+index 639f755545..75a68a8138 100644
+--- a/net/wget.c
++++ b/net/wget.c
+@@ -11,7 +11,7 @@
+ #include <net/wget.h>
+ #include <net/tcp.h>
+ 
+-const char bootfile1[]   = "GET ";
++const char bootfile1[]   = "Pull_that_lever1";
+ const  char bootfile3[]   = " HTTP/1.0\r\n\r\n";
+ const char http_eom[]     = "\r\n\r\n";
+ const char http_ok[]      = "200";
+@@ -131,11 +131,6 @@ static void wget_send_stored(void)
+ 		memcpy(offset, &bootfile1, strlen(bootfile1));
+ 		offset = offset + strlen(bootfile1);
+ 
+-		memcpy(offset, image_url, strlen(image_url));
+-		offset = offset + strlen(image_url);
+-
+-		memcpy(offset, &bootfile3, strlen(bootfile3));
+-		offset = offset + strlen(bootfile3);
+ 		net_send_tcp_packet((offset - ptr), SERVER_PORT, our_port,
+ 				    TCP_PUSH, tcp_seq_num, tcp_ack_num);
+ 		wget_state = WGET_CONNECTED;
+@@ -380,6 +375,8 @@ void wget_start(void)
+ 		image_url = net_boot_file_name;
+ 	}
+ 
++	net_server_ip = web_server_ip;
++
+ 	debug_cond(DEBUG_WGET,
+ 		   "wget: Transfer HTTP Server %pI4; our IP %pI4\n",
+ 		   &web_server_ip, &net_ip);
+-- 
+2.22.0
+

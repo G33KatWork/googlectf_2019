@@ -1,0 +1,100 @@
+From 946f0ab1bb4c09433c751ce8bdb17c7f10bf759d Mon Sep 17 00:00:00 2001
+From: Andreas Galauner <andreas@galauner.de>
+Date: Sat, 22 Jun 2019 21:36:25 +0200
+Subject: [PATCH 1/6] ARM CTF
+
+---
+ configs/qemu_arm_defconfig | 31 ++++++++++++++++---------------
+ include/configs/qemu-arm.h | 20 ++------------------
+ 2 files changed, 18 insertions(+), 33 deletions(-)
+
+diff --git a/configs/qemu_arm_defconfig b/configs/qemu_arm_defconfig
+index 19d572afb4..35bd574c7d 100644
+--- a/configs/qemu_arm_defconfig
++++ b/configs/qemu_arm_defconfig
+@@ -3,18 +3,24 @@ CONFIG_ARM_SMCCC=y
+ CONFIG_ARCH_QEMU=y
+ CONFIG_TARGET_QEMU_ARM_32BIT=y
+ CONFIG_NR_DRAM_BANKS=1
+-CONFIG_AHCI=y
+-CONFIG_DISTRO_DEFAULTS=y
++CONFIG_ENV_VARS_UBOOT_CONFIG=y
++CONFIG_SUPPORT_RAW_INITRD=y
+ # CONFIG_DISPLAY_CPUINFO is not set
+ # CONFIG_DISPLAY_BOARDINFO is not set
+-CONFIG_CMD_BOOTEFI_SELFTEST=y
++CONFIG_HUSH_PARSER=y
++CONFIG_CMD_BOOTZ=y
++# CONFIG_CMD_FLASH is not set
++CONFIG_CMD_PART=y
+ CONFIG_CMD_PCI=y
+-CONFIG_CMD_USB=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_MII=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_PXE=y
++CONFIG_DOS_PARTITION=y
++CONFIG_ISO_PARTITION=y
++CONFIG_EFI_PARTITION=y
+ CONFIG_OF_BOARD=y
+ CONFIG_ENV_IS_IN_FLASH=y
+-CONFIG_SCSI_AHCI=y
+-CONFIG_AHCI_PCI=y
+-CONFIG_BLK=y
+ # CONFIG_MMC is not set
+ CONFIG_MTD=y
+ CONFIG_MTD_NOR_FLASH=y
+@@ -23,16 +29,11 @@ CONFIG_CFI_FLASH=y
+ CONFIG_SYS_FLASH_USE_BUFFER_WRITE=y
+ CONFIG_SYS_FLASH_CFI=y
+ CONFIG_DM_ETH=y
+-CONFIG_E1000=y
+-CONFIG_NVME=y
+ CONFIG_PCI=y
+ CONFIG_DM_PCI=y
++CONFIG_DM_PCI_COMPAT=y
+ CONFIG_PCIE_ECAM_GENERIC=y
+-CONFIG_SCSI=y
+-CONFIG_DM_SCSI=y
+ CONFIG_SYSRESET=y
+ CONFIG_SYSRESET_PSCI=y
+-CONFIG_USB=y
+-CONFIG_DM_USB=y
+-CONFIG_USB_EHCI_HCD=y
+-CONFIG_USB_EHCI_PCI=y
++# CONFIG_VIRTIO_MMIO is not set
++# CONFIG_VIRTIO_BLK is not set
+diff --git a/include/configs/qemu-arm.h b/include/configs/qemu-arm.h
+index 65fdb1e929..ae59e25ab7 100644
+--- a/include/configs/qemu-arm.h
++++ b/include/configs/qemu-arm.h
+@@ -24,24 +24,8 @@
+ #define CONFIG_ENV_ADDR			0x4000000
+ #define CONFIG_ENV_SIZE			SZ_256K
+ 
+-#define BOOT_TARGET_DEVICES(func) \
+-	func(USB, usb, 0) \
+-	func(SCSI, scsi, 0) \
+-	func(VIRTIO, virtio, 0) \
+-	func(DHCP, dhcp, na)
+-
+-#include <config_distro_bootcmd.h>
+-
+-#define CONFIG_PREBOOT "pci enum"
+-#define CONFIG_EXTRA_ENV_SETTINGS \
+-	"fdt_high=0xffffffff\0" \
+-	"initrd_high=0xffffffff\0" \
+-	"fdt_addr=0x40000000\0" \
+-	"scriptaddr=0x40200000\0" \
+-	"pxefile_addr_r=0x40300000\0" \
+-	"kernel_addr_r=0x40400000\0" \
+-	"ramdisk_addr_r=0x44000000\0" \
+-	BOOTENV
++#define CONFIG_BOOTCOMMAND \
++	"pci enum; virtio scan; dhcp; ctf"
+ 
+ #define CONFIG_SYS_CBSIZE 512
+ 
+-- 
+2.22.0
+

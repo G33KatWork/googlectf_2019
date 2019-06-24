@@ -1,0 +1,24 @@
+From cfb01703eaf7136d0f76d22596cc0a2ec9deb90e Mon Sep 17 00:00:00 2001
+From: Andreas Galauner <andreas@galauner.de>
+Date: Mon, 24 Jun 2019 03:59:30 +0200
+Subject: [PATCH] x86 defconfig
+
+---
+ configs/qemu-x86_64_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/configs/qemu-x86_64_defconfig b/configs/qemu-x86_64_defconfig
+index d89cd44144..280d20e51b 100644
+--- a/configs/qemu-x86_64_defconfig
++++ b/configs/qemu-x86_64_defconfig
+@@ -40,6 +40,7 @@ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_DHCP=y
+ # CONFIG_CMD_NFS is not set
++CONFIG_CMD_WGET=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_TIME=y
+ CONFIG_CMD_QFW=y
+-- 
+2.22.0
+

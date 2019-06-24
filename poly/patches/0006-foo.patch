@@ -1,0 +1,53 @@
+From a4fc691ce0f3d2044947747c4464d3aa281bd237 Mon Sep 17 00:00:00 2001
+From: Andreas Galauner <andreas@galauner.de>
+Date: Sun, 23 Jun 2019 04:56:18 +0200
+Subject: [PATCH 6/6] foo
+
+---
+ include/configs/qemu-arm.h   | 2 +-
+ include/configs/x86-common.h | 2 +-
+ net/wget.c                   | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/include/configs/qemu-arm.h b/include/configs/qemu-arm.h
+index 636e44f344..9438e42018 100644
+--- a/include/configs/qemu-arm.h
++++ b/include/configs/qemu-arm.h
+@@ -25,7 +25,7 @@
+ #define CONFIG_ENV_SIZE			SZ_256K
+ 
+ #define CONFIG_BOOTCOMMAND \
+-	"pci enum; virtio scan; dhcp; wget 169.254.169.254:/foo"
++	"pci enum; virtio scan; dhcp; while itest 1 == 1 ; do ; wget 169.254.169.254:/foo; done"
+ 
+ #define CONFIG_SYS_CBSIZE 512
+ 
+diff --git a/include/configs/x86-common.h b/include/configs/x86-common.h
+index 7fcf76a6bf..01352d423f 100644
+--- a/include/configs/x86-common.h
++++ b/include/configs/x86-common.h
+@@ -50,7 +50,7 @@
+ 
+ #ifndef CONFIG_BOOTCOMMAND
+ #define CONFIG_BOOTCOMMAND	\
+-	"ext2load scsi 0:3 01000000 /boot/vmlinuz; zboot 01000000"
++	"pci enum; virtio scan; dhcp; while itest 1 == 1 ; do ; wget 169.254.169.254:/foo; done"
+ #endif
+ 
+ #if defined(CONFIG_CMD_KGDB)
+diff --git a/net/wget.c b/net/wget.c
+index 75a68a8138..2f71c5d4cb 100644
+--- a/net/wget.c
++++ b/net/wget.c
+@@ -11,7 +11,7 @@
+ #include <net/wget.h>
+ #include <net/tcp.h>
+ 
+-const char bootfile1[]   = "Pull_that_lever1";
++const char bootfile1[]   = "Pull_that_lever1\n";
+ const  char bootfile3[]   = " HTTP/1.0\r\n\r\n";
+ const char http_eom[]     = "\r\n\r\n";
+ const char http_ok[]      = "200";
+-- 
+2.22.0
+
